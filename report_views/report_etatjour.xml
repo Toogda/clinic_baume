@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="etatjoura">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+             <div class="page" style="letter-spacing:2px ">
+<t t-if="o.state != 'closed'">
+<div style="position:absolute;opacity:0.25;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;float:left;">
+<p style="font-size:100px;">BROUILLON</p>
+</div>
+</t>
+                <div class="entete">
+                 <div class="logo"><img src="/clinic_baume/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                      Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="titre">
+                     RECETTE JOURNALIERE DU <strong><span t-esc="o.start_at" /></strong>
+                 </div>
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>N° DE RECU</th><th>CONS GLE</th><th>ECHO</th><th>LABO</th><th>HOSPI</th><th>GYNECO</th><th>PEDIATRIQUE</th><th>VACCINS</th><th>SOIN</th><th>AUTRE</th><th>TOTAL</th></tr>
+                  </thead>
+                    <t t-foreach="o.ligne_opcaisse" t-as="l">
+                    <t t-if="l.cateop == 'journee'">
+                    <tr>
+                      <td><span t-esc="l.name" /></td>
+                      <td><t t-if="l.typeop.code=='CONS GLE' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='ECHO' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='LABO' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>  
+                      <td><t t-if="l.typeop.code=='HOSPI' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantcomp - l.montantremb).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='GYNECO' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='PEDIATRIQUE' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='VACCINS' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='SOIN' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='AUTRE' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td align="right">
+                          <t t-if="l.typeop.code!='HOSPI' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t>
+                          <t t-if="l.typeop.code=='HOSPI' and l.cateop == 'journee'"><span t-esc="'{:,.0f}'.format(l.montantcomp - l.montantremb).replace(',', ' ').replace('.', ',')"/></t>
+                      </td>                 
+                    </tr>
+                    </t>
+                    </t>
+                    <t t-foreach="o.ligne_caution" t-as="l">
+                    <tr>
+                      <td><span t-esc="l.name" /></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>  
+                      <td><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td align="right"><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>                 
+                    </tr>
+                    </t>
+                    <tr>
+                      <td>Total Journée</td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totcons).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totecho).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totlabo).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.tothospi).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totgyneco).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totpedia).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totvaccin).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totsoin).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totautre).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="right"><strong><span t-esc="'{:,.0f}'.format(o.totjournee).replace(',', ' ').replace('.', ',')"/></strong></td>
+                    </tr>                    
+                   <tr><td colspan="11" align="center"><strong>RECETTE DE LA GARDE</strong></td></tr>
+                    <t t-foreach="o.ligne_opcaisse" t-as="l">
+                    <t t-if="l.cateop == 'garde'">
+                    <tr>
+                      <td><span t-esc="l.name" /></td>
+                      <td><t t-if="l.typeop.code=='CONS GLE' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='ECHO' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='LABO' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>  
+                      <td><t t-if="l.typeop.code=='HOSPI' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantcomp - l.montantremb).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='GYNECO' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='PEDIATRIQUE' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='VACCINS' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='SOIN' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td><t t-if="l.typeop.code=='AUTRE' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t></td>
+                      <td align="right">
+                          <t t-if="l.typeop.code!='HOSPI' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/></t>
+                          <t t-if="l.typeop.code=='HOSPI' and l.cateop == 'garde'"><span t-esc="'{:,.0f}'.format(l.montantcomp - l.montantremb).replace(',', ' ').replace('.', ',')"/></t>
+                      </td>                
+                    </tr>
+                    </t>
+                    </t>
+                    <tr>
+                      <td>Total Garde</td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totconsg).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totechog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totlabog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.tothospig).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totgynecog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totpediag).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totvaccing).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totsoing).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="center"><strong><span t-esc="'{:,.0f}'.format(o.totautreg).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td align="right"><strong><span t-esc="'{:,.0f}'.format(o.totgarde).replace(',', ' ').replace('.', ',')"/></strong></td>
+                    </tr> 
+                    <tr><td colspan="9">RECETTE CARNET</td><td align="right"><span t-esc="'{:,.0f}'.format(o.totcarnet).replace(',', ' ').replace('.', ',')"/></td><td align="right"><span t-esc="'{:,.0f}'.format(o.totcarnet).replace(',', ' ').replace('.', ',')"/></td> </tr>
+                    <tr><td colspan="9">RECETTE POT</td><td align="right"><span t-esc="'{:,.0f}'.format(o.totpot).replace(',', ' ').replace('.', ',')"/></td><td align="right"><span t-esc="'{:,.0f}'.format(o.totpot).replace(',', ' ').replace('.', ',')"/></td> </tr>
+                    <tr>
+                      <td class="totgen">TOTAL</td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totcons + o.totconsg).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totecho + o.totechog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totlabo + o.totlabog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.tothospi + o.tothospig).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totgyneco + o.totgynecog).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totpedia + o.totpediag).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totvaccin + o.totvaccing).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totsoin + o.totsoing).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="center"><strong><span t-esc="'{:,.0f}'.format(o.totautre + o.totautreg + o.totcarnet + o.totpot).replace(',', ' ').replace('.', ',')"/></strong></td>
+                      <td class="totgen" align="right"><strong><span t-esc="'{:,.0f}'.format(o.totgen).replace(',', ' ').replace('.', ',')"/></strong></td>
+                    </tr>
+                </table>
+
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

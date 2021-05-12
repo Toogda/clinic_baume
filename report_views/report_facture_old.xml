@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="facturea">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="2"/>
+        <t t-set="data_report_margin_left" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+    <div class="header text-left haut">
+      
+    </div>
+                <div class="page" style="font-family:Arial, Helvetica, sans-serif; margin-top:20px; padding-top:20px;">
+				<t t-if="o.state in ('draft')">
+<div style="position:absolute;opacity:0.25;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;">
+<p style="font-size:150px;">BROUILLON</p>
+</div>
+</t>
+<div><img src="/clinic_baume/static/src/img/entete.png"  class="entete2"/></div>
+                   <div class="infoscli">
+                     <div class="infosclig">
+					       <div class="emetteur">
+						       <span class="cli">Patient hospitalisé:</span><br />
+							    <strong><span t-esc="o.idpatient.nom"/> <span t-esc="o.idpatient.prenom"/></strong> <br />
+								Tel:<span t-esc="o.idpatient.phone"/> <br />					         
+						    </div>
+                            <div class="bc">FACTURE N° <span t-esc="o.name" /></div><br /><br />
+                     </div>
+                     <div class="infosclid">
+                          <span class="cli">CLIENT:</span><br />
+                          <span t-esc="o.idassurance.name" class="nomcli"/> <br />
+						  <strong>RCCM:</strong><span t-esc="o.idassurance.rccm"/><br />
+                          <strong>Adresse:</strong><span t-esc="o.idassurance.adresse" class="adcli"/><br />
+                          <strong>Tél. :</strong> <span t-esc="o.idassurance.phone" /><br />
+                          <div class="infosclidb">
+                             <div class="infosclidf"><span class="codetva"><strong>IFU N°:</strong></span> <span t-esc="o.idassurance.ifu"  class="codetva"/> / <span t-esc="o.idassurance.division"  class="codetva"/><br /></div><div class="infosclidr"><strong>RI : </strong><span t-esc="o.idassurance.regime" /></div>
+                          </div>                          
+                     </div>
+					 <div class="datelieu">Ouagadougou, le <span t-field="o.date" t-options="{'widget': 'date'}"/>	<br /></div>
+                   </div>
+                   <div class="tableau">
+                     <table class="table esp tfact" width="100%">
+                          <thead>
+  							<tr>
+							    <th class="design">Désignation</th>
+							    <th class="qte">Qté</th>
+							    <th class="pu">PU</th>
+							    <th class="ht">Montant</th>
+								<th class="md">Ticket MOD</th>
+								<th class="ma">Montant à payer</th>
+							</tr>
+                          </thead>
+                         <tbody class="poste">
+						  <t t-set="categorieb" t-value="" />
+                          <t t-foreach="o.ligne_facture.sorted(key=lambda r: r.idarticle.categ_id.code)" t-as="oline">
+						   <t t-if="oline.idarticle.categ_id.code==categorieb">
+                           <tr>
+                            <td class="hauteur" valign="middle"><span t-esc="oline.idarticle.name"/></td>
+                            <td align="center" valign="middle"><span t-esc="'{:,.0f}'.format(oline.qte).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.pu).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montant).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montantpatient).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montantass).replace(',', ' ').replace('.', ',')"/></td>
+                           </tr>
+						  </t>
+				         <t t-if="oline.idarticle.categ_id.code!=categorieb">
+						 <t t-set="categorieb" t-value="oline.idarticle.categ_id.code" />
+						  <tr>
+                            <td class="hauteur" valign="middle" colspan="6"><strong><span t-esc="oline.idarticle.categ_id.name"/></strong></td>
+						  </tr> 
+                           <tr>
+                            <td class="hauteur" valign="middle"><span t-esc="oline.idarticle.name"/></td>
+                            <td align="center" valign="middle"><span t-esc="'{:,.0f}'.format(oline.qte).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.pu).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montant).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montantpatient).replace(',', ' ').replace('.', ',')"/></td>
+							<td align="right" valign="middle"><span t-esc="'{:,.0f}'.format(oline.montantass).replace(',', ' ').replace('.', ',')"/></td>
+                           </tr>
+						  </t>
+                          </t>
+						  <tr>
+						     <td colspan="3" class="totl"><strong>TOTAL GENERAL</strong></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montantpatient+o.remise).replace(',', ' ').replace('.', ',')"/></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></td>
+						  </tr>
+						  <tr>
+						     <td colspan="3" class="totl"><strong>REMISE</strong></td>
+							 <td class="tot totl"  align="right"></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.remise).replace(',', ' ').replace('.', ',')"/></td>
+							 <td class="tot totl"  align="right"></td>
+						  </tr>
+						  <tr>
+						     <td colspan="3" class="totl"><strong>NET A PAYER</strong></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></td>
+							 <td class="tot totl"  align="right"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></td>
+						  </tr>
+                          </tbody>
+                     </table>
+                        <div class="lettre">Arrêté la facture n°   <span t-esc="o.name" /> à la somme de <strong><span t-esc="user.company_id.compute_amount_text(o.montantass)"/>(<span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/>)  Franc(s) CFA</strong> à payer par l'assurance<br/>
+Et <strong><span t-esc="user.company_id.compute_amount_text(o.montantpatient)"/>(<span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/>)  Franc(s) CFA</strong> à payer par le patient</div>
+                   </div>
+                   <div class="recap">
+                      <div class="recapg"> 
+                                      <p style="color:#FFFFFF">k</p>
+                      </div>
+                      <div class="recapd"> 
+                         <div class="resp"> 
+                             <strong> LA COMPTABILITE</strong>
+
+                              
+                         </div>
+                       </div>
+                   </div>
+
+              </div>
+    <div class="footer text-center pied">
+<div><img src="/clinic_baume/static/src/img/pied.png" /></div>
+    </div>
+        </t>
+        </t>
+    </t>
+</template>
+</odoo>

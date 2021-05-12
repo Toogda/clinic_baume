@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/oclinic/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="recucaissea">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="4"/>
+        <t t-set="data_report_margin_bottom" t-value="4"/>
+        <t t-set="data_report_header_spacing" t-value="2"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+             <div class="page" style="letter-spacing:2px ">
+                <div class="entete">
+                 <div class="logo"><img src="/oclinic/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                      Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="titre">
+                     ATTESTATION DE PAIEMENT DES SOINS N° <strong><span t-esc="o.name" /></strong>
+                 </div>
+                <div class="deuxcol"><div class="titrechamp">Patient</div><div class="valchamp"><span t-esc="o.idpatient.name" /></div><div class="titrechamp">Date</div><div class="valchamp"><span t-esc="o.date" t-esc-options='{"widget": "date"}'/></div><div class="titrechamp">Nature</div><div class="valchamp"><span t-esc="o.typeop.name" /></div></div>
+                <div class="deuxcol"><div class="titrechamp2">Part patient</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantabs).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Assurance</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Total</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></div></div>
+                <t t-if="o.remisem!=0"><div class="deuxcol"><div class="titrechamp2">Remise</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.remisem).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Montant Net</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></div></div></t>
+<div class="vide"></div>
+               <div class="tableaud">
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Article</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>
+                  </thead>
+                    <t t-foreach="o.ligne_opcaisse" t-as="l">
+                    <tr>
+                      <td><span t-esc="l.idarticle.name" /></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.qte).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.pu).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+                    </t>
+                </table>
+                </div>
+                  <div class="lettres">Arrêté, le présent reçu à la somme de  <span t-esc="o.mtlettre(o.montantpatient)"/> FCFA</div>
+
+                   <div style="width:100%;font-size:16px; line-height:30px; margin-top:15px" >
+                     <div style="width:50%; margin-left:30px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; font-weight:bold ">CAISSIER(E)</div>
+                     <div style="width:45%; margin-left:10px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; text-align:right; font-weight:bold">CLIENT</div>
+                    </div>
+
+
+                <div class="entete">
+                 <div class="logo"><img src="/clinic/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                     Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="titre">
+                     ATTESTATION DE PAIEMENT DES SOINS N° <strong><span t-esc="o.name" /></strong>
+                 </div>
+                <div class="deuxcol"><div class="titrechamp">Patient</div><div class="valchamp"><span t-esc="o.idpatient.name" /></div><div class="titrechamp">Date</div><div class="valchamp"><span t-esc="o.date" t-esc-options='{"widget": "date"}'/></div><div class="titrechamp">Nature</div><div class="valchamp"><span t-esc="o.typeop.name" /></div></div>
+                <div class="deuxcol"><div class="titrechamp2">Part patient</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Assurance</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Total</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></div></div>
+                <t t-if="o.remisem!=0"><div class="deuxcol"><div class="titrechamp2">Remise</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.remisem).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Montant Net</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></div></div></t>
+<div class="vide"></div>
+               <div class="tableaud">
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Article</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>
+                  </thead>
+                    <t t-foreach="o.ligne_opcaisse" t-as="l">
+                    <tr>
+                      <td><span t-esc="l.idarticle.name" /></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.qte).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.pu).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+                    </t>
+                </table>
+                </div>
+                  <div class="lettres">Arrêté, le présent reçu à la somme de  <span t-esc="o.mtlettre(o.montantpatient)"/> FCFA</div>
+
+                   <div style="width:100%;font-size:16px; line-height:30px; margin-top:15px" >
+                     <div style="width:50%; margin-left:30px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; font-weight:bold ">CAISSIER(E)</div>
+                     <div style="width:45%; margin-left:10px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; text-align:right; font-weight:bold">CLIENT</div>
+                    </div>
+
+
+                <div class="entete">
+                 <div class="logo"><img src="/clinic/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                      Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="titre">
+                     ATTESTATION DE PAIEMENT DES SOINS N° <strong><span t-esc="o.name" /></strong>
+                 </div>
+                <div class="deuxcol"><div class="titrechamp">Patient</div><div class="valchamp"><span t-esc="o.idpatient.name" /></div><div class="titrechamp">Date</div><div class="valchamp"><span t-esc="o.date" t-esc-options='{"widget": "date"}'/></div><div class="titrechamp">Nature</div><div class="valchamp"><span t-esc="o.typeop.name" /></div></div>
+                <div class="deuxcol"><div class="titrechamp2">Part patient</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Assurance</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Total</div><div class="valchamp2"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></div></div>
+                <t t-if="o.remisem!=0"><div class="deuxcol"><div class="titrechamp2">Remise</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.remisem).replace(',', ' ').replace('.', ',')"/></div><div class="titrechamp2">Montant Net</div><div class="valchamp2 mt"><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></div></div></t>
+<div class="vide"></div>
+               <div class="tableaud">
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Article</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>
+                  </thead>
+                    <t t-foreach="o.ligne_opcaisse" t-as="l">
+                    <tr>
+                      <td><span t-esc="l.idarticle.name" /></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.qte).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.pu).replace(',', ' ').replace('.', ',')"/></td>
+                      <td><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+                    </t>
+                </table>
+                </div>
+                  <div class="lettres">Arrêté, le présent reçu à la somme de  <span t-esc="o.mtlettre(o.montantpatient)"/> FCFA</div>
+
+                   <div style="width:100%;font-size:16px; line-height:30px; margin-top:15px" >
+                     <div style="width:50%; margin-left:30px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; font-weight:bold ">CAISSIER(E)</div>
+                     <div style="width:45%; margin-left:10px; float:left;border-bottom:2px dashed #000; padding-bottom:50px; text-align:right; font-weight:bold">CLIENT</div>
+                    </div>
+
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

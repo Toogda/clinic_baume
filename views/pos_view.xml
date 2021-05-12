@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data><!-- Top menu -->
+        <act_window 
+            id="action_opcaisse"
+            name="Operation caisse"
+            res_model="clinic.opcaisse"
+            src_model="pos.session"
+            context="{'default_idopcaisse':active_id}"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>
+        <act_window 
+            id="action_caution"
+            name="Caution"
+            res_model="clinic.caution"
+            src_model="pos.session"
+            context="{'default_idcaution':active_id}"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>		
+		<act_window 
+            id="action_recettegarde"
+            name="Recette garde"
+            res_model="clinic.recettegarde"
+            src_model="pos.session"
+            context="{'default_idrecettegarde':active_id}"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>
+		<act_window 
+            id="action_transfert"
+            name="Transfert"
+            res_model="clinic.transfert"
+            src_model="pos.session"
+            context="{'default_idtransfert':active_id}"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>
+		<act_window 
+            id="action_reghospi"
+            name="Reghospi"
+            res_model="clinic.reghospi"
+            src_model="pos.session"
+            context="{'default_idreghospi':active_id}"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"/>	
+<record id="clinic_sessioncaisse_form" model="ir.ui.view">
+            <field name="name">Secaisse.ext</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+             <field name="arch" type="xml">
+                <xpath expr="//button[@name='open_cashbox']" position="replace" />
+                <xpath expr="//button[@name='open_frontend_cb']" position="replace" />
+                <xpath expr="//button[@name='%(point_of_sale.action_pos_box_in)d']" position="replace" />
+                <xpath expr="//button[@name='%(point_of_sale.action_pos_box_out)d']" position="replace" />
+                <xpath expr="//button[@name='open_cashbox']" position="replace" />
+                <xpath expr="//button[@name='action_pos_session_closing_control']" position="replace" />
+                <xpath expr="//button[@name='action_pos_session_closing_control']" position="replace" />
+                <xpath expr="//button[@name='action_pos_session_validate']" position="replace" />
+                <xpath expr="//button[@name='action_pos_session_open']" position="after">
+                    <button name="reouvrir" type="object" string="Réouvrir la session" attrs="{'invisible' : [('state', '!=', 'closing_control')]}" class="oe_highlight" groups="clinic_baume.group_clinic_caissier"/>
+                    <button name="action_pos_session_closing_control" type="object" string="Fermer la session" attrs="{'invisible' : ['|', ('cash_control', '=', False),('state', '!=', 'opened')]}" class="oe_highlight" groups="clinic_baume.group_clinic_caissier"/>
+                    <button name="action_pos_session_closing_control" type="object" string="Valider la clôture" attrs="{'invisible' : ['|', ('cash_control', '=', True),('state', '!=', 'opened')]}" class="oe_highlight" groups="clinic_baume.group_micro_caissier"/>
+                    <button name="action_pos_session_validate" type="object" string="Valider la clôture" states="closing_control" class="oe_highlight" groups="clinic_baume.group_clinic_caissier"/>
+                </xpath>
+                <xpath expr="//button[@name='action_stock_picking']" position="before">
+                       <button name="open_cashbox"
+                            class="oe_stat_button"
+                            attrs="{'invisible':['|', '|', '|', ('cash_control', '=', False), ('state', '=', 'opening_control'), ('state', '=', 'closed'), ('state', '=', 'opened')]}" 
+                            icon="fa-money"
+                            type="object" context="{'balance': 'end'}"
+                            groups="clinic_baume.group_clinic_caissier">
+                            <span class="o_stat_text">Régler le solde de clôture</span>
+                        </button>
+                        <button class="oe_stat_button" name="%(action_opcaisse)d"
+                            type="action" icon="fa-level-down"
+                            attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}" groups="clinic_baume.group_clinic_caissier">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Operations de</span>
+                                <span class="o_stat_text">Caisse</span>
+                            </div>
+                        </button>
+						<button class="oe_stat_button" name="%(action_caution)d"
+                            type="action" icon="fa-level-down"
+                            attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}" groups="clinic_baume.group_clinic_caissier">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Cautions</span>
+                                <span class="o_stat_text"></span>
+                            </div>
+                        </button>
+						<button class="oe_stat_button" name="%(action_recettegarde)d"
+                            type="action" icon="fa-level-down"
+                            attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}" groups="clinic_baume.group_clinic_caissier">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Recette</span>
+                                <span class="o_stat_text">Fonds</span>
+                            </div>
+                        </button>
+						<button class="oe_stat_button" name="%(action_transfert)d"
+                            type="action" icon="fa-level-up"
+                            attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}" groups="clinic_baume.group_clinic_caissier">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Transfert</span>
+                                <span class="o_stat_text">Fonds</span>
+                            </div>
+                        </button>
+						<button class="oe_stat_button" name="%(action_reghospi)d"
+                            type="action" icon="fa-level-down"
+                            attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened'])]}" groups="clinic_baume.group_clinic_caissier">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Reglement</span>
+                                <span class="o_stat_text">HOSPI</span>
+                            </div>
+                        </button>
+                </xpath>
+
+
+
+                <xpath expr="//field[@name='statement_ids']" position="after">
+                    <notebook>
+                        <page string="Operations de caisse" attrs="{'invisible': [('state', 'in', ('nouveau'))]}">
+                            <field name="ligne_opcaisse" nolabel="1" widget="one2many_list" mode="tree" attrs="{'readonly': [('state', '!=', 'opened')]}">
+                                <tree string="Operation caisse">
+									<field name="date"/>
+									<field name="name" />
+									<field name="idpatient" />
+									<field name="idassurance" />
+									<field name="idsociete" />
+									<field name="montantpatient" sum="totm"/>
+									<field name="montantass" sum="totm"/>
+									<field name="montant"  sum="totm" />
+									<field name="etatfact" />
+									<field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+						<page string="Cautions versées" attrs="{'invisible': [('state', 'in', ('nouveau'))]}">
+                            <field name="ligne_caution" nolabel="1" widget="one2many_list" mode="tree" attrs="{'readonly': [('state', '!=', 'opened')]}">
+                                <tree string="Cautions versées">
+									<field name="date"/>
+									<field name="name" />
+									<field name="idpatient" />
+									<field name="objet" />
+									<field name="montant" sum="totm"/>
+									<field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+						<page string="HOSPI" attrs="{'invisible': [('state', 'in', ('nouveau'))]}">
+                            <field name="ligne_reghospi" nolabel="1" widget="one2many_list" mode="tree" attrs="{'readonly': [('state', '!=', 'opened')]}">
+                                <tree string="Reglements HOSPI">
+									<field name="date"/>
+									<field name="name" />
+									<field name="idpatient" />
+									<field name="montant" sum="totm"/>
+									<field name="montantpatient" sum="totm"/>
+									<field name="montantass" sum="totm"/>
+									<field name="montantcaution" sum="totm"/>
+									<field name="montantcomp" sum="totm"/>
+									<field name="montantremb" sum="totm"/>
+									<field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Recette garde" attrs="{'invisible': [('state', 'in', ('nouveau'))]}">
+                            <field name="ligne_recettegarde" nolabel="1" widget="one2many_list" mode="tree" attrs="{'readonly': [('state', '!=', 'opened')]}">
+                                <tree string="Recette garde">
+									<field name="date"/>
+									<field name="name" />
+									<field name="deposant" />
+									<field name="receptionniste" />
+									<field name="montant" sum="totm"/>
+									<field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+						<page string="Transfert fonds" attrs="{'invisible': [('state', 'in', ('nouveau'))]}">
+                            <field name="ligne_transfert" nolabel="1" widget="one2many_list" mode="tree" attrs="{'readonly': [('state', '!=', 'opened')]}">
+                                <tree string="Transfert">
+									<field name="name" />
+									<field name="datetrans"/>
+									<field name="destination"/>
+									<field name="caissier_id" />
+									<field name="tresorier_id" />
+									<field name="state"/>
+									<field name="montant"/>
+									<field name="ref"/>																	
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+				</field>
+	     </record>
+		 <record id="clinic_transfert_form" model="ir.ui.view">
+	         <field name="name">clinic.transfert.form</field>
+             <field name="model">clinic.transfert</field>
+             <field name="arch" type="xml">
+	         <form string="Transferts">
+                      <header>
+					    <button name="vertransfert" string="Vérouiller" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'ouvert')]}" groups="clinic_baume.group_clinic_caissier"/>
+						<button name="devertransfert" string="Dévérouiller" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'verrouille')]}" groups="clinic_baume.group_clinic_caissier"/>
+					    <button name="validetransfert" string="Valider Transfert" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'verrouille')]}" groups="clinic_baume.group_clinic_tresorier"/>
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>	
+						<button name="revenir" string="Revenir" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_caissier"/>					
+						<button name="annuler" string="Confirmer Annulation" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_tresorier"/>								
+				        <button name="%(report_btransfert)d" string="Imprimer Bordereau" type="action" icon="gtk-print" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="ouvert,verrouille,valide" />
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="name" />
+							<field name="datetrans" attrs="{'readonly': [('state', '!=', 'tt')]}"/>
+							<field name="destination" attrs="{'readonly': [('state', '!=', 'ouvert')]}"/>
+							<field name="state" invisible="1"/>
+							<field name="montant" attrs="{'readonly': [('state', '!=', 'ouvert')]}"/>
+							<field name="ref" attrs="{'readonly': [('state', '!=', 'ouvert')]}"/>
+							<field name="caissier_id" />
+							<field name="tresorier_id" />
+                        </group>
+                      </group>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+		 
+		 <record id="clinic_transfert_tree" model="ir.ui.view">
+	         <field name="name">clinic.transfert.tree</field>
+             <field name="model">clinic.transfert</field>
+             <field name="arch" type="xml">
+	         <tree string="Transferts">
+							<field name="datetrans" attrs="{'readonly': [('state', '!=', 'tt')]}"/>
+							<field name="destination" attrs="{'readonly': [('state', '!=', 'ouvert')]}"/>
+							<field name="state" invisible="1"/>
+							<field name="montant"/>
+							<field name="caissier_id" />
+							<field name="tresorier_id" />
+                </tree>
+			</field>
+	     </record>
+
+ <record model="ir.actions.act_window" id="action_clinic_transfert">
+      <field name="name">Transferts</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.transfert</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_transfert_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter un transfert
+        </p>
+      </field>
+    </record>
+ <record model="ir.actions.act_window" id="action_clinic_facture">
+      <field name="name">Factures</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.facture</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_facture_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter une facture
+        </p>
+      </field>
+    </record>
+
+   
+
+    <!--<menuitem id="point_of_sale.menu_point_ofsale" parent="point_of_sale.menu_point_of_sale" action="point_of_sale.action_pos_pos_form" sequence="1" groups="group_micro_empty_group"/>-->
+    <delete id="point_of_sale.menu_point_ofsale" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_pos_products" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_point_of_sale" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_point_of_sale" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_point_rep" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_report_pos_order_all" model="ir.ui.menu"/>
+    <delete id="point_of_sale.menu_report_order_details" model="ir.ui.menu"/>
+    <menuitem
+        id="point_of_sale.menu_pos_session_all"
+        parent="point_of_sale.menu_point_root"
+        action="point_of_sale.action_pos_session"
+        sequence="10"
+        groups="point_of_sale.group_pos_manager"/>
+
+ <menuitem 
+        id="point_of_sale.clinic_patient"
+        parent="point_of_sale.menu_point_root"
+        action="clinic_baume.action_clinic_patient"
+        sequence="40"
+        name="Patients"/>
+
+<!-- <menuitem
+        id="point_of_sale.clinic_facture"
+        parent="point_of_sale.menu_point_root"
+        action="clinic_baume.action_clinic_facture"
+        sequence="45"
+        name="Factures Hospi"/> -->
+<menuitem
+        id="point_of_sale.clinic_factureko"
+        parent="point_of_sale.menu_point_root"
+        action="clinic_baume.action_clinic_factureko"
+        sequence="46"
+        name="Factures Hospi"/>
+<menuitem
+        id="point_of_sale.clinic_factureas"
+        parent="point_of_sale.menu_point_root"
+        action="clinic_baume.action_clinic_factureas"
+        sequence="48"
+        name="Factures Assurance"/>
+<menuitem
+        id="point_of_sale.clinic_reglement"
+        parent="point_of_sale.menu_point_root"
+        action="clinic_baume.action_clinic_reglement"
+        sequence="49"
+        name="Règlements"/>
+	<menuitem 
+        id="clinic_parametre"
+        parent="point_of_sale.menu_point_root"
+        sequence="50"
+        name="Paramètres"/>
+    <menuitem 
+        id="point_of_sale.clinic_assurance"
+        parent="clinic_parametre"
+        action="clinic_baume.action_clinic_assurance"
+        sequence="10"
+        name="Assurances"/>
+	<menuitem 
+        id="point_of_sale.clinic_societe"
+        parent="clinic_parametre"
+        action="clinic_baume.action_clinic_societe"
+        sequence="20"
+        name="Sociétés"/>
+	<menuitem 
+        id="point_of_sale.clinic_medecin"
+        parent="clinic_parametre"
+        action="clinic_baume.action_clinic_medecin"
+        sequence="30"
+        name="Medecins"/>
+	<!-- <menuitem 
+        id="point_of_sale.clinic_medecin"
+        parent="clinic_parametre"
+        action="clinic_baume.action_clinic_regAssuranceCaisse"
+        sequence="30"
+        name="Medecins"/> -->
+</data>
+</odoo>

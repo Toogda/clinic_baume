@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Reports -->
+<record id="paysage" model="report.paperformat">
+    <field name="name">A4 Paysage</field>
+    <field name="default" eval="True"/>
+    <field name="format">custom</field>
+    <field name="page_height">297</field>
+    <field name="page_width">210</field>
+    <field name="orientation">Landscape</field>
+    <field name="margin_top">40</field>
+    <field name="margin_bottom">23</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False"/>
+    <field name="header_spacing">3</field>
+    <field name="dpi">80</field>
+</record>
+        <report 
+            id="report_recuac"
+            model="immo.versementacquereur"
+            string="Reçu acquereur"
+            report_type="qweb-pdf"
+            name="immo.report_recuacq"
+            paperformat = "immo.paysage"
+            file="immo.report_recuacq"
+            />
+        <report 
+            id="report_recusous"
+            model="immo.versementsouscripteur"
+            string="Reçu souscripteur"
+            report_type="qweb-pdf"
+            name="immo.report_recusousc"
+            paperformat = "immo.paysage"
+            file="immo.report_recusousc"
+            />
+        <report 
+            id="report_recudem"
+            model="immo.reglementdem"
+            string="Reçu demarcheur"
+            report_type="qweb-pdf"
+            name="immo.report_recudema"
+            paperformat = "immo.paysage"
+            file="immo.report_recudema"
+            />
+        <report 
+            id="report_demandep"
+            model="immo.dossier"
+            string="Demande"
+            report_type="qweb-pdf"
+            name="immo.report_rapdemande"
+            file="immo.report_rapdemande"
+            />
+        <report 
+            id="report_cloture"
+            model="pos.session"
+            string="Etat de clôture"
+            report_type="qweb-pdf"
+            name="immo.report_rapcloture"
+            file="immo.report_rapcloture"
+            />
+        <report 
+            id="report_ordrep"
+            model="immo.dossier"
+            string="Ordre de versement"
+            report_type="qweb-pdf"
+            name="immo.report_rapordre"
+            file="immo.report_rapordre"
+            />
+        <report 
+            id="action_report_creancesclients"
+            model="immo.dossier"
+            string="Creances clients"
+            report_type="qweb-html"
+            name="immo.report_creancesclients"
+            paperformat = "immo.paysage"
+            file="immo.report_creancesclients"
+            />
+        <report 
+            id="action_report_commissiondem"
+            model="immo.dossier"
+            string="Commissions"
+            report_type="qweb-html"
+            name="immo.report_commissiondem"
+            file="immo.report_commissiondem"
+            />
+        <report 
+            id="action_report_prevision"
+            model="immo.dossier"
+            string="Prevision"
+            report_type="qweb-html"
+            name="immo.report_prevision"
+            paperformat = "immo.paysage"
+            file="immo.report_prevision"
+            />
+    </data>
+</odoo>

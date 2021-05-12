@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="report_recucaisse_duplicata">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="5"/>
+        <t t-set="data_report_margin_bottom" t-value="4"/>
+        <t t-set="data_report_header_spacing" t-value="2"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+
+        <t t-foreach="docs" t-as="o">
+				        <t t-set="o" t-value="o.with_context(lang=user.lang)" />
+            <t t-call="web.basic_layout">
+             <div class="page">
+                <div class="entete">
+                 <div class="logo"><img src="/clinic_baume/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                     Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57 75 
+                 </div>
+                </div>
+                 <div class="titre">
+                    DUPLICATA D'ATTESTATION DE PAIEMENT DES SOINS N° <strong><span t-esc="o.name" /></strong><br />
+                 </div>
+               <br /> <div class="deuxcol"><div class="titrechamp">Patient:</div><div class="valchamp"><span t-esc="o.idpatient.nom" /></div><div class="titrechamp">Date</div><div class="valchamp"><span t-field="o.date"/></div><div class="valchampuser">Par <span t-esc="o.idopcaisse.user_id.name"/>, le <span t-esc="o.write_date" t-esc-options='{"widget": "datetime"}'/></div></div>
+<div class="vide"></div><br />
+               <div class="tableaud">
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Code</th><th>Dénomination</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>
+                  </thead>
+                    <t t-foreach="o.ligne_opcaisse.sorted(key=lambda r: r.categorie.code)" t-as="l">
+                    <tr>
+					  <td align="center" class="categ"><span t-esc="l.categorie.code" /></td>
+                      <td><span t-esc="l.idarticle.name" /> <t t-if="l.idmedecin">(Dr. <span t-esc="l.idmedecin.name" />)</t></td>
+                      <td align="center"><span t-esc="'{:,.0f}'.format(l.qte).replace(',', ' ').replace('.', ',')"/></td>
+                      <td align="right"><span t-esc="'{:,.0f}'.format(l.pu).replace(',', ' ').replace('.', ',')"/></td>
+                      <td align="right"><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+                    </t>
+			   </table>
+                  <table class="table table-sm tableautot" width="100%">
+					 <tr>
+                      <td colspan="3" class="totl"><strong>Total</strong></td>
+                      <td class="totl" align="right"><strong><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></strong></td>                    
+                    </tr>
+					<tr>
+                      <td colspan="3" class="totl">Part Assurance</td>
+                      <td class="totl" align="right"><span t-esc="'{:,.0f}'.format(o.montantass).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+					<t t-if="o.remise!=0">
+					<tr>
+                      <td colspan="3" class="totl"><strong>Remise sur Part Patient</strong></td>
+                      <td class="totl" align="right"><strong><span t-esc="'{:,.0f}'.format(o.remise).replace(',', ' ').replace('.', ',')"/></strong></td>                    
+                    </tr>
+					</t>
+					<tr>
+                      <td colspan="3" class="totl"><strong>Part Patient Nette</strong></td>
+                      <td class="totl totp" align="right"><strong><span t-esc="'{:,.0f}'.format(o.montantpatient).replace(',', ' ').replace('.', ',')"/></strong></td>                    
+                    </tr>
+					
+                </table>
+                </div>
+                  <div class="lettres">Arrêté, le présent reçu à la somme de  <span t-esc="o.mtlettre(o.montantpatient)"/> FCFA</div>
+
+                   <div style="width:100%;font-size:16px; line-height:30px; margin-top:10px" >
+                     <div style="width:50%; margin-left:30px; float:left; padding-bottom:1px; font-weight:bold ">CLIENT</div>
+                     <div style="width:45%; margin-left:10px; float:left; padding-bottom:1px; text-align:right">
+					 <strong>CAISSIER(E)</strong>
+		
+					 </div>
+                    </div>
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

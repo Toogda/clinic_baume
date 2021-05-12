@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="recucautiona">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_margin_bottom" t-value="4"/>
+        <t t-set="data_report_header_spacing" t-value="2"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+
+        <t t-foreach="docs" t-as="o">
+				        <t t-set="o" t-value="o.with_context(lang=user.lang)" />
+            <t t-call="web.basic_layout">
+             <div class="page">
+                <div class="entete">
+                 <div class="logo"><img src="/clinic_baume/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                      Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57 
+                 </div>
+                </div>
+                 <div class="titre">
+                     <br />RECU DE VERSEMENT DE CAUTION N° <strong><span t-esc="o.name" /></strong><br /><br />
+                 </div>
+               <br /> <div class="deuxcol"><div class="titrechamp">Patient:</div><div class="valchamp"><span t-esc="o.idpatient.nom" /></div><div class="titrechamp"></div><div class="valchamp"></div><div class="titrechamp">Date</div><div class="valchamp"><span t-field="o.date"/></div></div>
+<div class="videc"></div><br />
+               <div class="tableaud">
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Code</th><th>Dénomination</th><th>Quantité</th><th>Prix unitaire</th><th>Montant</th></tr>
+                  </thead>
+                    <tr>
+					  <td></td>
+                      <td><span t-esc="o.objet" /></td>
+                      <td align="center">-</td>
+                      <td align="center">-</td>
+                      <td align="right"><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></td>                    
+                    </tr>
+			   </table>
+                  <table class="table table-sm tableautot" width="100%">
+					 <tr>
+                      <td colspan="3" class="totl"><strong>Total</strong></td>
+                      <td class="totl" align="right"><strong><span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/></strong></td>                    
+                    </tr>
+                </table>
+                </div>
+                  <div class="lettres">Arrêté, le présent reçu à la somme de  <span t-esc="o.mtlettre(o.montant)" /> (<span t-esc="'{:,.0f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/>) FCFA</div>
+
+                   <div style="width:100%;font-size:16px; line-height:30px; margin-top:30px" >
+                     <div style="width:50%; margin-left:30px; float:left; padding-bottom:50px; font-weight:bold ">CLIENT</div>
+                     <div style="width:45%; margin-left:10px; float:left; padding-bottom:50px; text-align:right; font-weight:bold">CAISSIER(E)</div>
+                    </div>
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

@@ -1,0 +1,382 @@
+/* CSS Document */
+.tableau tr td.categ {
+  font-size: 16px;
+}
+.break-after {
+  display: block;
+  page-break-after: always;
+  position: relative;
+}
+
+.break-before {
+  display: block;
+  page-break-before: always;
+  position: relative;
+}
+.brouillard {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+}
+.tableb tr td {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  border-top: 1px solid #ccc;
+  line-height: 28px;
+  padding: 5px;
+}
+.tableb tr th {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  border-top: 1px solid #000;
+  line-height: 30px;
+  padding: 5px;
+  background-color: #cccccc;
+}
+
+.tableb tr td.opc {
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+  font-weight: bold;
+}
+.entete {
+  display: inline-table;
+  vertical-align: top;
+}
+.entete2 {
+  height: 150px;
+  width: 100%;
+}
+.source {
+  width: 60%;
+  float: left;
+}
+.destination {
+  width: 40%;
+  float: left;
+}
+
+.deuxcol {
+  width: 100%;
+  float: left;
+}
+
+.titrechamp {
+  width: 10%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 18px;
+}
+.valchamp {
+  font-weight: bold;
+  width: 22%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  text-align: left;
+}
+.valchampuser {
+  width: 35%;
+  float: right;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  text-align: right;
+  font-style: italic;
+}
+
+.titrechamp2 {
+  width: 16%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+.valchamp2 {
+  font-weight: bold;
+  width: 16%;
+  border: 1px solid #000;
+  float: left;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  padding-left: 3px;
+  text-align: center;
+}
+.mt {
+  background-color: #cccccc;
+}
+.vide {
+  min-height: 40px;
+}
+.videc {
+  min-height: 100px;
+  float: left;
+}
+
+.tableau tr td {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  line-height: 20px;
+}
+.tfact tr td {
+  line-height: 10px;
+}
+.tableautot tr td {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  border: 1px solid #000;
+  line-height: 25px;
+}
+.totp {
+  background-color: #cccccc;
+}
+.tableau tr th {
+  text-align: center;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  border: 1px solid #000;
+  border-bottom: 1px solid #000;
+  line-height: 20px;
+}
+
+.lettres {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+}
+.logo {
+  width: 30%;
+  float: left;
+}
+.infoent {
+  width: 70%;
+  float: left;
+  text-align: center;
+  border-bottom: 2px solid #000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+.entete {
+  width: 100%;
+  float: left;
+  margin-top: 10px;
+}
+.titre {
+  width: 100%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.totgen {
+  background-color: #cccccc;
+  font-weight: bold;
+  border: 1px solid #000;
+}
+.service {
+  width: 100%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.infospatient {
+  width: 100%;
+  float: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.infospatientg {
+  width: 40%;
+  float: left;
+  border: 2px solid #000;
+  padding-left: 3px;
+}
+.infospatientd {
+  width: 55%;
+  float: left;
+  border: 2px solid #000;
+  margin-left: 10px;
+  padding-left: 3px;
+}
+.titretest {
+  background-color: #cccccc;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: left;
+  width: 100%;
+}
+.titreinfo {
+  float: left;
+  width: 30%;
+}
+.continfo {
+  float: left;
+  width: 70%;
+}
+.totcat {
+  background-color: #cccccc;
+}
+.totgen {
+  background-color: #999999;
+}
+
+.haut {
+  font-family: "Times New Roman", Times, serif;
+  padding-bottom: 50px;
+}
+.infoscli {
+  width: 100%;
+  padding-top: 10px;
+}
+
+.infosclig {
+  width: 58%;
+  float: left;
+}
+.emetteur {
+  width: 50%;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  line-height: 30px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+.periode {
+  width: 75%;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  line-height: 30px;
+  margin-bottom: 10px;
+  padding-left: 20px;
+}
+.infosclid {
+  width: 42%;
+  float: left;
+  font-size: 18px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  line-height: 30px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+}
+.infosclidb {
+  padding-left: 10px;
+  margin-top: 2px;
+  border-top: 1px solid #000;
+}
+.infosclidf {
+  width: 58%;
+  float: left;
+  font-size: 16px;
+  font-family: "Times New Roman", Times, serif;
+}
+.infosclidr {
+  width: 42%;
+  float: left;
+  font-size: 16px;
+  font-family: "Times New Roman", Times, serif;
+}
+.cli {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333333;
+}
+.nomcli {
+  font-size: 24px;
+  font-weight: bold;
+}
+.adcli {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+}
+.codetva {
+  font-size: 16px;
+  font-family: "Times New Roman", Times, serif;
+}
+.recap {
+  width: 100%;
+}
+.recapg {
+  width: 52%;
+  float: left;
+}
+.recapd {
+  width: 48%;
+  font-weight: bold;
+  font-size: 20px;
+  float: left;
+}
+.tablesom tr td {
+  border: 1px solid #000;
+  padding: 5px;
+}
+.tot {
+  background-color: #cccccc;
+  font-size: 24px;
+  font-weight: bold;
+}
+table tr td.totl {
+  border: 1px solid #000;
+}
+.tablesomg {
+  width: 40%;
+}
+
+.design {
+  width: 39%;
+}
+.qte {
+  width: 7%;
+}
+.pu {
+  width: 13%;
+}
+.ht {
+  width: 13%;
+}
+.md {
+  width: 13%;
+}
+.ma {
+  width: 15%;
+}
+
+.resp {
+  text-align: center;
+  font-size: 20px;
+}
+.esp tr td {
+  padding-left: 15px;
+  padding-right: 5px;
+}
+.bc {
+  width: 95%;
+  font-size: 28px;
+  background-color: #cccccc;
+  font-weight: bold;
+  text-align: center;
+}
+.lettre {
+  width: 100%;
+  font-family: "Times New Roman", Times, serif;
+  font-style: italic;
+  margin-bottom: 35px;
+  font-size: 18px;
+}
+.datelieu {
+  text-align: right;
+  font-size: 22px;
+  margin-bottom: 20px;
+}

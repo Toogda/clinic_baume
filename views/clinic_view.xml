@@ -1,0 +1,709 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!-- Formulaires  -->
+       <record id="view_clinic_pricelistitem_form" model="ir.ui.view">
+            <field name="name">Pricelist.ext</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//notebook//page[@name='sales']//group//group//div//field[@name='item_ids']//tree//field[@name='fixed_price']" position="after">
+                  <field name="plafond"/>   
+                </xpath>
+            </field>
+        </record>
+       <record id="view_clinic_category_form" model="ir.ui.view">
+            <field name="name">Category.ext</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="before">
+                  <field name="code"/>   
+                </xpath>
+            </field>
+        </record>
+<record id="clinic_patient_tree" model="ir.ui.view">
+	         <field name="name">clinic.patient.tree</field>
+             <field name="model">clinic.patient</field>
+             <field name="arch" type="xml">
+	         <tree string="patients">
+							<field name="name"/>
+							<field name="nom"/>
+							<field name="prenom"/>
+							<field name="dob"/>
+							<field name="phone"/>
+
+                </tree>
+			</field>
+	     </record>
+		 <record id="clinic_patient_search" model="ir.ui.view">
+	         <field name="name">clinic.patient.search</field>
+             <field name="model">clinic.patient</field>
+             <field name="arch" type="xml">
+	         <search string="patients">
+							<field name="nom"/>
+
+                </search>
+			</field>
+	     </record>
+<record id="clinic_patient_form" model="ir.ui.view">
+	         <field name="name">clinic.patient.form</field>
+             <field name="model">clinic.patient</field>
+             <field name="arch" type="xml">
+	         <form string="patients">
+			      <sheet>
+				       <div>
+                            <field name="image" widget='image' class="oe_left oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+                            <div class="oe_title">
+                               <label for="name" string="ID" class="oe_edit_only"/>
+                                <h1>
+                                    <field name="name" readonly="1"/>
+                                </h1>
+                            </div>
+                        </div>
+				  <group>
+				     <group>
+							<field name="nom"/>
+							<field name="phone"/>
+							<field name="type"/>
+							<field name="est_un_personnel"/>
+							<field name="sex"/>
+							<field name="blood_type"/>
+					  </group>
+					  <group>
+							<field name="dob"/>
+							<field name="lieunaiss"/>
+							<field name="adresse"/>
+							<field name="profession"/>
+							<field name="marital_status"/>
+							<field name="rh"/>
+					  </group>
+					</group>
+			<notebook>
+				<page string="Assurance">
+					 <group>
+				     <group>
+							<field name="idassurance"/>
+							<field name="numass"/>
+					  </group>
+					  <group>
+							<field name="dateexp"/>
+							<field name="idsociete"/>
+					  </group>
+					</group>
+					<field name="ligne_taux" nolabel="1">
+					  <tree string="Taux" editable="bottom">
+					    <field name="categorie"/>
+						<field name="taux"/>
+					  </tree>
+					</field>
+				</page>
+				<page string="Autres informations">
+					 <group>
+				     <group>
+					        <field name="age"/>
+							<field name="critical_info"/>
+							<field name="general_info"/>
+					  </group>
+					  <group>
+							<field name="deceased"/>
+							<field name="dod"/>
+							<field name="cod"/>
+					  </group>
+					</group>
+				</page>
+			</notebook>
+				   </sheet>
+
+                </form>
+			</field>
+	     </record>
+       <record id="view_clinic_company_form" model="ir.ui.view">
+            <field name="name">Company.ext</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='website']" position="after">
+                  <field name="sequencecaisse"/>   
+                  <field name="sequencecaution"/>  
+                  <field name="sequencerel"/>   
+                  <field name="sequencetransfert"/> 
+				  <field name="sequencerecette"/> 
+				  <field name="sequencefacture"/> 
+				  <field name="sequenceFactNonAssurer"/> 
+				  <field name="sequenceFactAssurer"/> 
+				  <field name="tauxPersonnel"/> 
+                </xpath>
+            </field>
+        </record>
+ <record model="ir.actions.act_window" id="action_clinic_patient">
+      <field name="name">Patients</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.patient</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_patient_tree"/>
+	  <field name="context">{'default_name': 'Nouveau'}</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter un patient
+        </p>
+      </field>
+    </record>
+	
+	<record id="clinic_assurance_tree" model="ir.ui.view">
+	         <field name="name">clinic.assurance.tree</field>
+             <field name="model">clinic.assurance</field>
+             <field name="arch" type="xml">
+	         <tree string="assurances">
+							<field name="name"/>
+							<field name="phone"/>
+							<field name="ifu"/>
+							<field name="rccm"/>
+							<field name="regime"/>
+							<field name="division"/>
+							<field name="pricelist_id"/>
+
+                </tree>
+			</field>
+	     </record>
+<record id="clinic_assurance_form" model="ir.ui.view">
+	         <field name="name">clinic.assurance.form</field>
+             <field name="model">clinic.assurance</field>
+             <field name="arch" type="xml">
+	         <form string="assurances">
+			      <sheet>
+
+				  <group>
+				     <group>
+							<field name="name"/>
+							<field name="phone"/>
+							<field name="adresse"/>
+							<field name="ifu"/>
+							<field name="rccm"/>
+							<field name="regime"/>
+							<field name="division"/>
+							<field name="pricelist_id"/>
+					  </group>
+					</group>
+				   </sheet>
+
+                </form>
+			</field>
+	     </record>
+ <record model="ir.actions.act_window" id="action_clinic_assurance">
+      <field name="name">Assurances</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.assurance</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_assurance_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter une assurance
+        </p>
+      </field>
+    </record>
+		<record id="clinic_societe_tree" model="ir.ui.view">
+	         <field name="name">clinic.societe.tree</field>
+             <field name="model">clinic.societe</field>
+             <field name="arch" type="xml">
+	         <tree string="societes">
+							<field name="name"/>
+
+                </tree>
+			</field>
+	     </record>
+<record id="clinic_societe_form" model="ir.ui.view">
+	         <field name="name">clinic.societe.form</field>
+             <field name="model">clinic.societe</field>
+             <field name="arch" type="xml">
+	         <form string="societes">
+			      <sheet>
+
+				  <group>
+				     <group>
+							<field name="name"/>
+							<field name="idassurance"/>
+					  </group>
+					</group>
+				   </sheet>
+
+                </form>
+			</field>
+	     </record>
+ <record model="ir.actions.act_window" id="action_clinic_societe">
+      <field name="name">societes</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.societe</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_societe_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter une societe
+        </p>
+      </field>
+    </record>
+	
+	<record id="clinic_opcaisse_form" model="ir.ui.view">
+	         <field name="name">clinic.opcaisse.form</field>
+             <field name="model">clinic.opcaisse</field>
+             <field name="arch" type="xml">
+	         <form string="Op caisse">
+                      <header>
+					    <button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>	
+						<button name="revenir" string="Revenir" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_caissier"/>					
+						<button name="annuler" string="Confirmer Annulation" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_tresorier"/>		
+                        <button name="%(report_recucaisse)d" string="Imprimer Reçu" type="action" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+                        <button name="%(report_recucaisse_duplicata)d" string="Imprimer Duplicata" type="action" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="date"/>
+							<field name="idpatient" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="numficheas" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="remise" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="state" invisible="1"/>
+
+                        </group>
+                        <group>
+						    <field name="idassurance"/>
+							<field name="idsociete" />
+						    <field name="montant"/>
+							<field name="montantass" />
+							<field name="montantpatient" />
+                        </group>
+                      </group>
+                    <notebook>
+                        <page string="Elements de L Operation">
+                            <field name="ligne_opcaisse" nolabel="1"  attrs="{'readonly': [('state', '!=', 'brouillon')]}">
+                                <tree string="opcaisse" editable="bottom">
+									<field name="idarticle" />
+									<field name="qte" />
+									<field name="pu" />
+									<field name="idmedecin" />
+									<field name="plafond" invisible="1"/>
+									<field name="montantpatient" />
+									<field name="montantass" />
+									<field name="montant" />
+                            </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+		 
+		 <record id="clinic_caution_form" model="ir.ui.view">
+	         <field name="name">clinic.caution.form</field>
+             <field name="model">clinic.caution</field>
+             <field name="arch" type="xml">
+	         <form string="Caution">
+                      <header>
+					    <button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>	
+						<button name="revenir" string="Revenir" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_caissier"/>					
+						<button name="annuler" string="Confirmer Annulation" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_tresorier"/>								
+                        <button name="%(report_recucaution)d" string="Imprimer Reçu" type="action"  attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="state" invisible="1" />
+							<field name="name"/>
+							<field name="date"/>
+							<field name="idpatient" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="objet" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="montant" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+                        </group>
+                      </group>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+		 		 <record id="clinic_recettegarde_form" model="ir.ui.view">
+	         <field name="name">clinic.recettegarde.form</field>
+             <field name="model">clinic.recettegarde</field>
+             <field name="arch" type="xml">
+	         <form string="Recette garde">
+                      <header>
+					    <button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+                        <button name="%(report_recurecettegarde)d" string="Imprimer Bordereau de recette" type="action"  attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="state" invisible="1" />
+							<field name="date"/>
+							<field name="deposant"/>
+							<field name="receptionniste"/>
+							<field name="montant" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+                        </group>
+                      </group>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+
+	<record id="clinic_facture_form" model="ir.ui.view">
+	         <field name="name">clinic.facture.form</field>
+             <field name="model">clinic.facture</field>
+             <field name="arch" type="xml">
+	         <form string="Facture">
+                      <header>
+					    <button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic.group_clinic_administrateur"/>
+                                            <button name="brouillon" string="Remettre en brouillon" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_facturier"/>						
+						<button name="annuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic.group_clinic_administrateur"/>		
+						<field name="state" widget="statusbar" statusbar_visible="brouillon,valide,reglep,reglea,reglee" />
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="date"/>
+							<field name="idpatient" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="state" invisible="1"/>
+                        </group>
+                        <group>
+						    <field name="idassurance"/>
+							<field name="idsociete" />
+                                                    <field name="remise" />
+						    <field name="montant"/>
+							<field name="montantass" />
+							<field name="montantpatient" />
+                        </group>
+                      </group>
+                    <notebook>
+                        <page string="Lignes de facture">
+                            <field name="ligne_facture" nolabel="1"  attrs="{'readonly': [('state', '!=', 'brouillon')]}">
+                                <tree string="facture" editable="bottom">
+									<field name="idarticle" />
+									<field name="qte" />
+									<field name="pu" />
+									<field name="idmedecin" />
+                                    <field name="plafond"/>
+									<field name="montantpatient" />
+									<field name="montantass" />
+									<field name="montant" />
+                            </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+	<record id="clinic_facture_tree" model="ir.ui.view">
+	         <field name="name">clinic.facture.tree</field>
+             <field name="model">clinic.facture</field>
+             <field name="arch" type="xml">
+	         <tree string="factures">
+							<field name="name"/>
+							<field name="idpatient"/>
+							<field name="idassurance"/>
+							<field name="idsociete" />
+						    <field name="montant"/>
+							<field name="montantass" />
+							<field name="montantpatient" />
+							<field name="state"/>
+
+                </tree>
+			</field>
+	     </record>
+		 
+		 <record id="clinic_reghospi_form" model="ir.ui.view">
+	         <field name="name">clinic.reghospi.form</field>
+             <field name="model">clinic.reghospi</field>
+             <field name="arch" type="xml">
+	         <form string="reghospi">
+                      <header>
+					    <button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>	
+						<button name="revenir" string="Revenir" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_caissier"/>					
+						<button name="annuler" string="Confirmer Annulation" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic_baume.group_clinic_tresorier"/>								
+                        <button name="%(report_recureghospi)d" string="Imprimer Reçu" type="action"  attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic_baume.group_clinic_caissier"/>
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="state" invisible="1" />
+							<field name="idfacture" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idpatient"/>
+							<field name="idassurance"/>
+							<field name="idsociete"/>
+							<field name="montant"/>
+							<field name="montantass"/>
+							<field name="montantpatient"/>
+                        </group>
+						<group>
+							<field name="date" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="caution" attrs="{'readonly': [('state', '!=', 'brouillon')]}" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('state','=','valide'),('idpatient','=',idpatient)]"/>
+							<field name="montantcaution"/>
+							<field name="montantcomp"/>
+							<field name="montantremb"/>
+                        </group>
+                      </group>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+		 
+		 	<record id="clinic_recugarde_tree" model="ir.ui.view">
+	         <field name="name">clinic.recugarde.tree</field>
+             <field name="model">clinic.recugarde</field>
+             <field name="arch" type="xml">
+	         <tree string="recugardes" editable="bottom">
+							<field name="date"/>
+							<field name="idpatient"/>
+							<field name="idassurance"/>
+							<field name="idsociete" />
+							<field name="numficheas" />
+							<field name="numrecu" />
+							<field name="montantpatient" />
+							<field name="montantass" />
+							<field name="montant"/>
+							<field name="state"/>
+							<button name="validef" string="Valider" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />							
+                </tree>
+			</field>
+	     </record>
+		  <record model="ir.actions.act_window" id="action_clinic_recugarde">
+      <field name="name">Reçus de garde</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.recugarde</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_recugarde_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter un reçu de garde
+        </p>
+      </field>
+    </record>
+	
+	
+	
+	<record id="clinic_factureas_form" model="ir.ui.view">
+	         <field name="name">clinic.factureas.form</field>
+             <field name="model">clinic.factureas</field>
+             <field name="arch" type="xml">
+	         <form string="Factures">
+                      <header>
+					    <button name="genelementsfact" string="PREPARER FACTURE" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+					    <button name="genfacture" string="VALIDER" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+						<button name="delettrer" string="ANNULER LETTRAGE" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'regle')]}" />
+                        <field name="state" widget="statusbar" statusbar_visible="brouillon,valide,regle" />
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="idassurance" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="debut" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+                        </group>
+                        <group>
+							<field name="datefact" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="fin" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+                        </group>
+                      </group>
+                    <notebook>
+                        <page string="Operations">
+                            <field name="ligne_recapopcaisse" nolabel="1" attrs="{'readonly': [('state', '!=', 'brouillon')]}">
+                                <tree string="recapopcaisse">
+									<field name="idopcaisse" />
+									<field name="date" />
+									<field name="idpatient" />
+									<field name="numficheas" />
+									<field name="montant"  sum="totm"/>
+									<field name="montantass"  sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Recap">
+                            <field name="ligne_recapcatas" nolabel="1" attrs="{'readonly': [('state', '!=', 'brouillon')]}">
+                                <tree string="recapcatas">
+									<field name="categorie" />
+									<field name="montant" sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+<record id="clinic_factureas_tree" model="ir.ui.view">
+	         <field name="name">clinic.factureas.tree</field>
+             <field name="model">clinic.factureas</field>
+             <field name="arch" type="xml">
+	         <tree string="Factures">
+							<field name="idassurance"/>
+							<field name="datefact"/>
+							<field name="debut"/>
+							<field name="fin"/>
+							<field name="state"/>
+                </tree>
+			</field>
+	     </record>
+
+ <record model="ir.actions.act_window" id="action_clinic_factureas">
+      <field name="name">Factures Assurance</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.factureas</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_factureas_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter une facture
+        </p>
+      </field>
+    </record>
+	
+	
+		<record id="clinic_reglement_form" model="ir.ui.view">
+	         <field name="name">clinic.reglement.form</field>
+             <field name="model">clinic.reglement</field>
+             <field name="arch" type="xml">
+	         <form string="Reglements">
+                      <header>
+					    <button name="validereg" string="VALIDER" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'brouillon')]}" />
+						<button name="lettrer" string="LETTRER" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" />
+                        <field name="state" widget="statusbar" statusbar_visible="brouillon,valide" />
+                      </header>
+                      <sheet>
+                      <group>
+                        <group>
+							<field name="date" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idbanque" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="ref" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="montant" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="montantres"/>
+                        </group>
+                        <group>
+							<field name="idassurance" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idfactures" attrs="{'readonly': [('montantres', '&lt;=', 0)],'invisible': [('state', '!=', 'valide')]}" widget="many2many_tags"/>
+							<field name="montantfact"/>
+                        </group>
+                      </group>
+
+                    <notebook>
+                        <page string="Factures réglées">
+                            <field name="ligne_facture" nolabel="1" attrs="{'readonly': [('state', '!=', 'ok')]}">
+                                <tree string="facture">
+									<field name="datefact" />
+									<field name="debut" />
+									<field name="fin" />
+									<field name="name" />
+									<field name="montant"  sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    </sheet>
+                </form>
+			</field>
+	     </record>
+<record id="clinic_reglement_tree" model="ir.ui.view">
+	         <field name="name">clinic.reglement.tree</field>
+             <field name="model">clinic.reglement</field>
+             <field name="arch" type="xml">
+	         <tree string="Reglements">
+							<field name="idassurance"/>
+							<field name="date"/>
+							<field name="idbanque"/>
+							<field name="ref"/>
+							<field name="montant"/>
+							<field name="montantres"/>
+							<field name="state"/>
+                </tree>
+			</field>
+	     </record>
+
+ <record model="ir.actions.act_window" id="action_clinic_reglement">
+      <field name="name">Reglements</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.reglement</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_reglement_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter un reglement
+        </p>
+      </field>
+    </record>
+	
+	
+			<record id="clinic_medecin_tree" model="ir.ui.view">
+	         <field name="name">clinic.medecin.tree</field>
+             <field name="model">clinic.medecin</field>
+             <field name="arch" type="xml">
+	         <tree string="medecins">
+							<field name="name"/>
+							<field name="nom"/>
+
+                </tree>
+			</field>
+	     </record>
+<record id="clinic_medecin_form" model="ir.ui.view">
+	         <field name="name">clinic.medecin.form</field>
+             <field name="model">clinic.medecin</field>
+             <field name="arch" type="xml">
+	         <form string="medecins">
+			      <sheet>
+
+				  <group>
+				     <group>
+							<field name="name"/>
+							<field name="nom"/>
+							<field name="specialite"/>
+							<field name="phone"/>
+					  </group>
+					</group>
+                    <notebook>
+                        <page string="Consultations Ordinaires">
+                            <field name="ligne_consult" nolabel="1" attrs="{'readonly': [('name', '!=', 'brouillon')]}">
+                                <tree string="consult">
+								    <field name="idarticle" />
+									<field name="montant"  sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Consultations Hospi">
+                            <field name="ligne_consulthospi" nolabel="1" attrs="{'readonly': [('name', '!=', 'brouillon')]}">
+                                <tree string="consulthospi">
+									<field name="idarticle" />
+									<field name="montant"  sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>			
+				   </sheet>
+
+                </form>
+			</field>
+	     </record>
+ <record model="ir.actions.act_window" id="action_clinic_medecin">
+      <field name="name">medecins</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.medecin</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_medecin_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter un medecin
+        </p>
+      </field>
+    </record>
+
+	
+
+	
+
+    </data>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="etatjourb">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+             <div class="page">
+<t t-if="o.state != 'closed'">
+<div style="position:absolute;opacity:0.25;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;float:left;">
+<p style="font-size:100px;">BROUILLON</p>
+</div>
+</t>
+                <div class="entete">
+                 <div class="logo"><img src="/clinic_baume/static/src/img/logo_baumev2.png" width="70%"/>
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                      Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="titre">
+                     RECETTE JOURNALIERE DU <strong><span t-esc="o.start_at" widget="date" /> au <span t-esc="o.stop_at" widget="date" /></strong>
+                 </div>
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>N° DE RECU</th><th>JOUR</th><th>GARDE</th><th>TOTAL</th></tr>
+                  </thead>
+				  	<t t-set="totgen" t-value="0"/>
+					<t t-set="totgenj" t-value="0"/>
+					<t t-set="totgeng" t-value="0"/>
+					<t t-set="totcat" t-value="0"/>
+					<t t-set="totcatj" t-value="0"/>
+					<t t-set="totcatg" t-value="0"/>
+					<t t-set="categ" t-value="0"/>
+					<t t-set="categname" t-value=""/>
+					<t t-set="totcaut" t-value="0"/>
+                    <t t-foreach="o.ligne_opcaisse.filtered(lambda line: line.state=='valide').sorted(key=lambda c: c.typeop.id)" t-as="l">
+					<t t-if="l.typeop.id!=categ"> 
+					  <t t-if="totgen!=0">
+					  <tr>
+					  	<td align="left" class="totcat">Total <span t-esc="categname" /></td>
+                      	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcatj).replace(',', ' ').replace('.', ',')"/><t t-set="totcatj" t-value="0"/></td>
+					  	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcatg).replace(',', ' ').replace('.', ',')"/><t t-set="totcatg" t-value="0"/></td>
+					  	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcat).replace(',', ' ').replace('.', ',')"/><t t-set="totcat" t-value="0"/></td>
+					  </tr> 
+					  </t>
+					  </t>
+                    <tr>
+                      <td align="left"><span t-esc="l.name" /> <t t-if="l.numrecu!=False">/ <span t-esc="l.numrecu" /></t></td>
+                      <td align="right"><t t-if="l.cateop=='journee'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/><t t-set="totcatj" t-value="totcatj+l.montantpatient"/><t t-set="totgenj" t-value="totgenj+l.montantpatient"/></t></td>
+					  <td align="right"><t t-if="l.cateop=='garde'"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/><t t-set="totcatg" t-value="totcatg+l.montantpatient"/><t t-set="totgeng" t-value="totgeng+l.montantpatient"/></t></td>
+					  <td align="right"><span t-esc="'{:,.0f}'.format(l.montantpatient).replace(',', ' ').replace('.', ',')"/><t t-set="totcat" t-value="totcat+l.montantpatient"/><t t-set="totgen" t-value="totgen+l.montantpatient"/></td>
+					</tr> 
+					  <t t-set="categ" t-value="l.typeop.id"/> 
+					  <t t-set="categname" t-value="l.typeop.name"/>               
+                    </t>
+					<tr>
+					  	<td align="left" class="totcat">Total <span t-esc="categname" /></td>
+                      	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcatj).replace(',', ' ').replace('.', ',')"/><t t-set="totcatj" t-value="0"/></td>
+					  	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcatg).replace(',', ' ').replace('.', ',')"/><t t-set="totcatg" t-value="0"/></td>
+					  	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcat).replace(',', ' ').replace('.', ',')"/><t t-set="totcat" t-value="0"/></td>
+					  </tr>
+					 <tr>
+					  	<td align="left" class="totgen">Total Prestations</td>
+                      	<td align="right" class="totgen"><span t-esc="'{:,.0f}'.format(totgenj).replace(',', ' ').replace('.', ',')"/></td>
+					  	<td align="right" class="totgen"><span t-esc="'{:,.0f}'.format(totgeng).replace(',', ' ').replace('.', ',')"/></td>
+					  	<td align="right" class="totgen"><span t-esc="'{:,.0f}'.format(totgen).replace(',', ' ').replace('.', ',')"/></td>
+					  </tr> 
+					  <t t-foreach="o.ligne_caution" t-as="l">
+					  	<tr>
+                      	<td align="left" colspan="3"><span t-esc="l.name" /></td>
+					  	<td align="right"><span t-esc="'{:,.0f}'.format(l.montant).replace(',', ' ').replace('.', ',')"/><t t-set="totcaut" t-value="totcaut+l.montant"/></td>
+					    </tr>
+					  </t>
+					   <t t-if="totcaut!=0">
+					    <tr>
+                      	<td align="left" colspan="3" class="totcat">Total Caution</td>
+					  	<td align="right" class="totcat"><span t-esc="'{:,.0f}'.format(totcaut).replace(',', ' ').replace('.', ',')"/></td>
+					    </tr>
+					  </t>
+					  	<tr>
+                      	<td align="left" colspan="3">Recette carnets</td>
+					  	<td align="right"><span t-esc="'{:,.0f}'.format(o.totcarnet).replace(',', ' ').replace('.', ',')"/></td>
+					    </tr>
+						<tr>
+                      	<td align="left" colspan="3">Recette pots</td>
+					  	<td align="right"><span t-esc="'{:,.0f}'.format(o.totpot).replace(',', ' ').replace('.', ',')"/></td>
+					    </tr>
+						<tr>
+                      	<td align="left" colspan="3" class="totgen">Total Général</td>
+					  	<td align="right" class="totgen"><span t-esc="'{:,.0f}'.format(totgen+totcaut+o.totcarnet+o.totpot).replace(',', ' ').replace('.', ',')"/></td>
+					    </tr>
+					  
+			
+                </table>
+
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

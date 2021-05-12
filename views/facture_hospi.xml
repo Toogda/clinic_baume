@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="clinic_factureko_form" model="ir.ui.view">
+		<field name="name">clinic.factureko.form</field>
+        <field name="model">clinic.factureko</field>
+        <field name="arch" type="xml">
+	    	<form string="factureko">
+            	<header>
+					<button name="validef" string="Générer Facture" type="object" class="btn-primary" states="proforma" />
+					<button name="semi_valider" string="Générer Proforma" type="object" class="btn-primary" states="brouillon" />
+					    <button name="aannuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'valide')]}" groups="clinic.group_clinic_administrateur"/>
+                        <button name="brouillon" string="Remettre en brouillon" type="object" class="btn-primary" states="proforma,valide" groups="clinic_baume.group_clinic_facturier"/>						
+						<button name="annuler" string="Annuler" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'aannuler')]}" groups="clinic.group_clinic_administrateur"/>		
+						<field name="state" widget="statusbar" statusbar_visible="brouillon,proforma,valide,reglep,reglea,reglee" />
+				</header>
+                <sheet>
+                	<group>
+                    	<group>
+							<field name="date" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idpatient" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idmedecin" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="idarticle" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="state" invisible="1"/>
+                    	</group>
+                        
+						<group>
+							<field name="idassurance" />
+							<field name="idsociete" />
+							<field name="remise" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="montant" />
+							<field name="montantass" attrs="{'readonly': [('state', '!=', 'brouillon'), ('state', '!=', 'proforma')]}"/>
+							<field name="montantpatient" />
+						</group>
+                        <group>
+                            <field name="ko" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="valeur_ko" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+							<field name="coeff" attrs="{'readonly': [('state', '!=', 'brouillon')]}"/>
+                        </group>
+                        <group>
+                            <button name='create_line' string="Remplissage Auto" type="object" class="btn-primary" />
+                        </group>
+                  	</group>
+					<notebook>
+                        <page string="Details Factures">
+                            <field name="ligne_factureko" nolabel="1"  attrs="{'readonly': [('state', '!=', 'brouillon')]}">
+                                <tree string="factureko" editable="bottom">
+									<field name="idarticle" />
+									<!-- <field name="ko" />
+									<field name="valeur_ko" />
+									<field name="coeff" /> -->
+									<field name="qte" />
+									<field name="pu" />
+									<!-- <field name="plafond"/> -->
+									<!-- <field name="montantpatient" />
+									<field name="montantass" /> -->
+									<field name="montant"  sum="totm"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+		</field>
+	</record>
+		 
+	<record id="clinic_factureko_tree" model="ir.ui.view">
+	    <field name="name">clinic.factureko.tree</field>
+            <field name="model">clinic.factureko</field>
+            <field name="arch" type="xml">
+	        <tree string="factureko" >
+				<field name="name"/>
+							<field name="idpatient"/>
+							<field name="idassurance"/>
+							<field name="idsociete" />
+						    <field name="montant"/>
+							<field name="montantass" />
+							<field name="montantpatient" />
+							<field name="state"/>
+			</tree>
+		</field>
+	</record>
+
+	 <record model="ir.actions.act_window" id="action_clinic_factureko">
+      <field name="name">factureko</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.factureko</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_factureko_tree"/>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Cliquer ici pour ajouter une facture k.o
+        </p>
+      </field>
+    </record>
+
+	<record id="clinic_caisse_tree" model="ir.ui.view">
+	    <field name="name">clinic.clinic.opcaisse.tree</field>
+            <field name="model">clinic.opcaisse</field>
+            <field name="arch" type="xml">
+	        <tree string="Etat de reglement Assurance - Op Caisse " >
+				<field name="name"/>
+					<field name="name"/>
+					<field name="date"/>
+					<field name="idpatient" />
+					<field name="idassurance"/>
+					<field name="montantpatient" />
+					<field name="montantass" />
+					<field name="montant"/>
+					<field name="state" invisible="1"/>
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_clinic_regAssuranceCaisse">
+      <field name="name">Regl Assurance OpCaisse</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">clinic.opcaisse</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="clinic_caisse_tree"/>
+    </record>
+    </data>
+</odoo>

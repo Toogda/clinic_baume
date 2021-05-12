@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_clinic_caisse" model="ir.sequence">
+            <field name="name">Caisse</field>
+            <field name="code">clinic.caisse</field>
+            <field name="prefix">CAISSE</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_clinic_releve" model="ir.sequence">
+            <field name="name">Releve</field>
+            <field name="code">clinic.releve</field>
+            <field name="prefix">Trans</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+		   <record id="clinic_patient" model="ir.sequence">
+            <field name="name">Patient</field>
+            <field name="code">clinic.patient</field>
+            <field name="prefix">P</field>
+            <field name="padding">4</field>
+        </record>
+
+    </data>
+</odoo>

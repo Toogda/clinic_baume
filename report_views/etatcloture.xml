@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="report.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="report_etatcloturea">
+    <t t-call="report.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family:Arial, Helvetica, sans-serif; letter-spacing:2px ">
+<t t-if="o.state != 'closed'">
+<div style="position:absolute;opacity:0.25;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;">
+<p style="font-size:100px;">BROUILLON</p>
+</div>
+</t>
+                <div style="width:100%;float:left;">
+                 <div style="width:45%;float:left;border:1px dashed #CCC; padding-left:5px">
+                  <div style="width:100%; text-align:center; font-size:13px" >
+                    <img src="/clinic_baume/static/src/img/logo_baumev2.png" width="100px" /><br/>
+                    <strong>----------------------------<br/>
+                    CLINIQUE BAUME DE GALAAD<br/>
+                    ----------------------------<br/>
+                    COMPTABILITE<br/>
+                    ----------------------------<br/>
+					CAISSE<br/></strong><br/>
+                  </div>
+                   <div style="width:100%;font-size:16px; line-height:30px; border-top:2px dashed #000; margin-top:20px" >
+                        <table style="width:90%" class="table">
+						 <thead>
+                           <tr><th colspan="3" align="center"><strong>ENCAISSE</strong></th></tr>
+                           <tr><th align="center"><strong>Nombre</strong></th><th align="center"><strong>Billet/Pièce</strong></th><th align="center"><strong >Sous total</strong></th></tr>
+						 </thead>
+                           <t t-set="totalenc" t-value="0" />
+                           <tr t-foreach="o.cash_register_id.cashbox_end_id.cashbox_lines_ids" t-as="ec">
+                             <td align="right"><span t-esc="'{:,.0f}'.format(ec.number).replace(',', ' ').replace('.', ',')"/></td>
+                             <td align="right"><span t-esc="'{:,.0f}'.format(ec.coin_value).replace(',', ' ').replace('.', ',')"/></td>
+                             <td align="right"><span t-esc="'{:,.0f}'.format(ec.subtotal).replace(',', ' ').replace('.', ',')"/></td>
+                             <t t-set="totalenc" t-value="totalenc+ec.subtotal" />
+                           </tr>
+                        </table>
+                    </div>
+                  </div>
+
+                 <div style="width:55%;float:left;border:1px dashed #CCC; padding-left:5px">
+                  <div style="width:100%; font-size:18px; min-height:218px" class="cloture" >
+                    <strong>ETAT DE CLOTURE DE LA CAISSE</strong><br/>
+                    ----------------------------------------------------------------------<br/>
+                    <strong>CAISSE:</strong><t t-esc="o.config_id.name"/><br/>
+                    <strong>NUMERO:</strong><t t-esc="o.name"/><br/>
+                    <strong>DATE D'OUVERTURE:</strong> <t t-esc="o.start_at" t-options="{'widget': 'datetime'}"/><br/>
+                    <strong>DATE DE CLOTURE:</strong> <t t-esc="o.stop_at" t-options="{'widget': 'datetime'}"/><br/>
+                    <strong>CAISSIER(E):</strong><t t-esc="o.user_id.name"/>
+                  </div>
+                   <div style="width:100%;font-size:16px; line-height:30px; border-top:2px dashed #000; margin-top:20px" >
+                               
+                        <table style="width:100%" class="table">
+						 <thead>
+                           <tr><th colspan="2" align="center"><strong>AJUSTEMENT COMPTABLE</strong></th></tr>
+						 </thead>
+                           <tr><td>+Recettes du jour</td><td align="right"><span t-esc="'{:,.0f}'.format(o.total_jour).replace(',', ' ').replace('.', ',')"/></td></tr>
+                           <tr><td>+Recette de la garde</td><td align="right"><span t-esc="'{:,.0f}'.format(o.total_garde).replace(',', ' ').replace('.', ',')"/></td></tr>
+                           <tr><td>+Cautions versées</td><td align="right"><span t-esc="'{:,.0f}'.format(o.total_caution).replace(',', ' ').replace('.', ',')"/></td></tr>
+                           <tr><td>-Cautions remboursées</td><td align="right"><span t-esc="'{:,.0f}'.format(o.total_rembourse).replace(',', ' ').replace('.', ',')"/></td></tr>
+                           <tr><td>-Transfert de fonds</td><td align="right"><span t-esc="'{:,.0f}'.format(o.total_transfert).replace(',', ' ').replace('.', ',')"/></td></tr>						   
+                        </table>
+                    </div>
+                  </div>
+                </div>
+                <div style="width:100%;float:left;">
+                 <div style="width:45%;float:left;border:1px dashed #CCC; padding-left:5px">
+                   <div style="width:100%;font-size:16px; line-height:30px; border-top:2px dashed #000; margin-top:20px" >
+                        <table style="width:90%" class="table">
+                           <tr><td colspan="2"><strong>Total</strong></td><td align="right"><strong><span t-esc="'{:,.0f}'.format(totalenc).replace(',', ' ').replace('.', ',')"/></strong></td></tr>
+                           <tr><td colspan="2"><strong>=Solde Caisse:</strong></td><td align="right" class="gris"><strong><span t-esc="'{:,.0f}'.format(totalenc).replace(',', ' ').replace('.', ',')"/></strong></td></tr>
+
+                        </table>
+                    </div>
+                  </div>
+                 <div style="width:55%;float:left;border:1px dashed #CCC; padding-left:5px">
+                   <div style="width:100%;font-size:16px; line-height:30px; border-top:2px dashed #000; margin-top:20px" >    
+                        <table style="width:100%" class="table">
+                           <tr><td><strong>Total</strong></td><td align="right"><strong><span t-esc="'{:,.0f}'.format(o.total_general).replace(',', ' ').replace('.', ',')"/></strong></td></tr>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+ 
+                </div>
+    <div class="footer">
+                 <div style="width:50%;float:left; padding-left:5px; font-size:18px; font-weight:bold;">
+                        VISA CAISSIER(E)
+                 </div>
+                 <div style="width:50%;float:left; padding-left:5px; font-size:18px; font-weight:bold; text-align:right;">
+                        VISA TRESORIER(E)
+                 </div>
+    </div>  
+        </t>
+    </t>
+</template>
+
+</odoo>

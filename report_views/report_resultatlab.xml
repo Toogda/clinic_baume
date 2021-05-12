@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="minimal_layout_inherit" inherit_id="web.minimal_layout">
+		<xpath expr="//head" position="inside">
+			<link rel='stylesheet' href="/clinic_baume/static/src/css/clinic.css"/>
+		</xpath>
+</template>
+<template id="resultatlab">
+    <t t-call="web.html_container">
+        <t t-set="data_report_margin_top" t-value="12"/>
+        <t t-set="data_report_header_spacing" t-value="9"/>
+        <t t-set="data_report_dpi" t-value="110"/>
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.basic_layout">
+             <div class="page" >
+                <div class="entete">
+                 <div class="logo">LOGO
+                 </div>
+                 <div class="infoent">
+                      <strong>Médecine générale - Spécialités médicales - Imagerie médicale - Hospitalisation</strong><br />
+                      <strong>Laboratoire d'analyses médicales - Vaccination</strong><br />
+                      --------------------------------------------<br />
+                     Zone Industrielle Kossodo  - Email:baume.galaad@gmail.com<br />
+                      Tel:  (+226) 70 00 10 30 / (+226) 25 65 57 57
+                 </div>
+                </div>
+                 <div class="service">
+                     SERVICE DU LABORATOIRE D'ANALYSES BIOMEDICALES
+                 </div>
+                 <div class="infospatient">
+                   <div class="infospatientg">
+                       <div class="titreinfo">Date</div><div class="continfo">: <span t-esc="o.date_requested" t-esc-options='{"widget": "date"}' /></div>
+                       <div class="titreinfo">N° Labo</div><div class="continfo">: <span t-esc="o.name" /></div>
+                       <div class="titreinfo">N° DM</div><div class="continfo">: </div>
+                       <div class="titreinfo">Section</div><div class="continfo">: <span t-esc="o.lab_department.name" /></div>
+                   </div>
+                   <div class="infospatientd">
+                       <div class="titreinfo">Nom-Prénom(s)</div><div class="continfo">: <span t-esc="o.patient.name" /></div>
+                       <div class="titreinfo">Sexe</div><div class="continfo">: <span t-esc="o.patient.sex" /></div>
+                       <div class="titreinfo">Age</div><div class="continfo">: <span t-esc="o.patient.age" /></div>
+                       <div class="titreinfo">Adresse</div><div class="continfo">: <span t-esc="o.patient.phone" /></div>
+                       <div class="titreinfo">Prescripteur</div><div class="continfo">: <span t-esc="o.requestor" /></div>                    
+                   </div>
+                 </div>
+
+                 <div class="titretest">
+                     <span t-esc="o.test_type.name" />
+                 </div>
+                <table class="table table-sm tableau" width="100%">
+                  <thead>
+                    <tr><th>Paramètres</th><th>Résultats</th><th>Valeurs de référence</th></tr>
+                  </thead>
+                    <t t-foreach="o.lab_test_criteria" t-as="l">
+                    <tr>
+                      <td><span t-esc="l.name" t-esc-options='{"widget": "html"}'/></td>
+                      <td><span t-esc="l.result" /></td>
+                      <td><span t-esc="l.normal_range" /><span t-esc="l.units.name" /></td>                
+                    </tr>
+                    </t>
+
+                </table>
+
+                </div>
+        </t>
+        </t>
+    </t>
+</template>
+
+</odoo>
